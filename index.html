@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>실시간 브레인스토밍 보드</title>
+  <link rel="stylesheet" href="style.css?v=1.1">
+  <script type="module" src="main.js?v=1.1"></script>
+</head>
+<body>
+
+  <!--  헤더 영역 -->
+  <header id="header">
+    <div id="topic-container">
+      <input type="text" id="topic-input" placeholder=" 주제를 입력하세요" />
+    </div>
+    <button type="button" id="top3-btn" class="top3-btn"> TOP 3</button>
+  </header>
+
+  <!--  중앙 텍 박 -->
+  <main id="board"></main>
+
+  <!-- 입력란 -->
+  <footer id="input-panel">
+    <textarea id="idea-input" rows="1" placeholder="새 아이디어 작성... (Enter로 제출)" aria-label="새 아이디어 작성"></textarea>
+    <button id="submit-btn">등록</button>
+  </footer>
+
+  <!-- 4. TOP 3 팝업 -->
+  <div id="top3-modal-overlay" class="modal-overlay">
+    <div class="modal top3-modal">
+      <div class="modal-title"> 실시간 인기 아이디어 TOP 3</div>
+      <div id="top3-list" class="top3-list"></div>
+    </div>
+  </div>
+
+  <!-- 코멘트 팝업 -->
+  <div id="modal-overlay" class="modal-overlay">
+    <div class="modal">
+      <div class="modal-title" id="modal-idea-text"></div>
+      <div class="comment-list" id="comment-list"></div>
+      <div class="modal-input-group">
+        <input type="text" class="modal-input" id="comment-input" placeholder="코멘트 입력...">
+        <button class="vote-btn" id="comment-submit-btn">작성</button>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>
