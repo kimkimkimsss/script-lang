@@ -10,7 +10,7 @@ const db = getDatabase(app);
 const ideasRef = ref(db, 'ideas');
 const topicRef = ref(db, 'topic');
 
-// --- 인지체크(재투포 불가) ---
+// --- 인지체크(재투표 불가) ---
 let clientId = localStorage.getItem('brainstorm_client_id');
 if (!clientId) {
   clientId = 'user_' + Math.random().toString(36).substring(2, 9);
@@ -124,19 +124,26 @@ function deleteIdea(id, event) {
   }
 }
 
-// 좋아요
 function voteIdea(id, event) {
   event.stopPropagation();
   const idea = ideasData[id];
   if (!idea) return;
 
-  const voters = idea.voters || {};
-  if (voters[clientId]) {
-    delete voters[clientId];
-    update(ref(db, `ideas/${id}`), { voters: voters });
-  } else {
-    update(ref(db, `ideas/${id}/voters`), { [clientId]: true });
-  }
+  const btn = event.currentTarget;
+  const box = btn.closest('.idea-box');
+
+  btn.classList.add('anim-active');
+  if (box) box.classList.add('anim-active');
+
+  setTimeout(() => {
+    const voters = idea.voters || {};
+    if (voters[clientId]) {
+      delete voters[clientId];
+      update(ref(db, `ideas/${id}`), { voters: voters });
+    } else {
+      update(ref(db, `ideas/${id}/voters`), { [clientId]: true });
+    }
+  }, 150);
 }
 
 function renderBoard() {
