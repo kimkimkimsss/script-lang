@@ -261,7 +261,7 @@ function renderTop3() {
     return;
   }
 
-  const rankBadges = ['🥇', '🥈', '🥉'];
+  const rankBadges = ['1등', '2등', '3등'];
 
   top3.forEach((item, index) => {
     const el = document.createElement('div');
