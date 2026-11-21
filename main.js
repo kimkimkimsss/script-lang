@@ -47,6 +47,7 @@ let activeResizer = null;
 
 if (searchSidebar) {
   searchSidebar.addEventListener('mousedown', (e) => {
+    if (window.innerWidth <= 768) return;
     const rect = searchSidebar.getBoundingClientRect();
     if (rect.right - e.clientX <= 12) {
       activeResizer = 'left';
@@ -58,6 +59,7 @@ if (searchSidebar) {
 
 if (commentSidebar) {
   commentSidebar.addEventListener('mousedown', (e) => {
+    if (window.innerWidth <= 768) return;
     const rect = commentSidebar.getBoundingClientRect();
     if (e.clientX - rect.left <= 12) {
       activeResizer = 'right';
@@ -68,7 +70,7 @@ if (commentSidebar) {
 }
 
 document.addEventListener('mousemove', (e) => {
-  if (!activeResizer) return;
+  if (!activeResizer || window.innerWidth <= 768) return;
   if (activeResizer === 'left' && searchSidebar) {
     let newWidth = e.clientX;
     if (newWidth >= 240 && newWidth <= 480) {
@@ -87,6 +89,10 @@ document.addEventListener('mouseup', () => {
     activeResizer = null;
     document.body.style.cursor = 'default';
   }
+});
+
+window.addEventListener('resize', () => {
+  renderBoard();
 });
 
 function getRandomPastelColor() {
