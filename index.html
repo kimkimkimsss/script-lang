@@ -4,45 +4,69 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>실시간 브레인스토밍 보드</title>
-  <link rel="stylesheet" href="style.css?v=1.1">
-  <script type="module" src="main.js?v=1.1"></script>
+  <link rel="stylesheet" href="style.css?v=2.0">
+  <script type="module" src="main.js?v=2.0"></script>
 </head>
 <body>
 
-  <!--  헤더 영역 -->
   <header id="header">
-    <div id="topic-container">
-      <input type="text" id="topic-input" placeholder=" 주제를 입력하세요" />
+    <div id="tabs-container">
+      <div id="tabs-list"></div>
+      <button id="add-tab-btn" title="새 주제 추가">+</button>
     </div>
-    <button type="button" id="top3-btn" class="top3-btn"> TOP 3</button>
+    <button type="button" id="top3-btn" class="top3-btn">TOP 3</button>
   </header>
 
-  <!--  중앙 텍 박 -->
-  <main id="board"></main>
+  <div id="main-layout">
+    <aside id="search-sidebar">
+      <div class="sidebar-header">
+        <div class="modal-title">아이디어 검색 & 목록</div>
+      </div>
+      
+      <div class="search-box-container">
+        <input type="text" id="search-input" placeholder="키워드 검색..." />
+      </div>
 
-  <!-- 입력란 -->
+      <div class="filter-section">
+        <div class="filter-title">정렬 기준</div>
+        <div class="filter-options">
+          <button class="filter-btn active" data-sort="latest">최신순</button>
+          <button class="filter-btn" data-sort="votes">추천순</button>
+          <button class="filter-btn" data-sort="comments">댓글순</button>
+        </div>
+      </div>
+
+      <div class="search-result-header" id="search-result-count">아이디어 목록 (0개)</div>
+      <div class="search-result-list" id="search-result-list">
+        <div style="color:#9ca3af; text-align:center; margin-top:30px; font-size:0.9rem;">등록된 아이디어가 없습니다.</div>
+      </div>
+    </aside>
+
+    <main id="board"></main>
+
+    <aside id="comment-sidebar">
+      <div class="sidebar-header">
+        <div class="modal-title" id="modal-idea-text">아이디어를 선택하세요</div>
+      </div>
+      <div class="comment-list" id="comment-list">
+        <div style="color:#9ca3af; text-align:center; margin-top:40px;">카드를 선택하면 코멘트가 여기에 표시됩니다.</div>
+      </div>
+      <div class="modal-input-group" id="sidebar-input-group" style="display: none;">
+        <input type="text" class="modal-input" id="comment-input" placeholder="코멘트 입력...">
+        <button class="vote-btn" id="comment-submit-btn">작성</button>
+      </div>
+    </aside>
+  </div>
+
   <footer id="input-panel">
     <textarea id="idea-input" rows="1" placeholder="새 아이디어 작성... (Enter로 제출)" aria-label="새 아이디어 작성"></textarea>
     <button id="submit-btn">등록</button>
   </footer>
 
-  <!-- 4. TOP 3 팝업 -->
   <div id="top3-modal-overlay" class="modal-overlay">
     <div class="modal top3-modal">
-      <div class="modal-title"> 실시간 인기 아이디어 TOP 3</div>
+      <div class="modal-title">실시간 인기 아이디어 TOP 3</div>
       <div id="top3-list" class="top3-list"></div>
-    </div>
-  </div>
-
-  <!-- 코멘트 팝업 -->
-  <div id="modal-overlay" class="modal-overlay">
-    <div class="modal">
-      <div class="modal-title" id="modal-idea-text"></div>
-      <div class="comment-list" id="comment-list"></div>
-      <div class="modal-input-group">
-        <input type="text" class="modal-input" id="comment-input" placeholder="코멘트 입력...">
-        <button class="vote-btn" id="comment-submit-btn">작성</button>
-      </div>
     </div>
   </div>
 
