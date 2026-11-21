@@ -33,6 +33,7 @@ body {
   overflow-x: auto;
   scrollbar-width: none;
   flex: 1;
+  min-width: 0;
   cursor: grab;
   touch-action: pan-y;
 }
@@ -679,33 +680,39 @@ body {
 
   /* 탭 3개(78px * 3) + 탭 사이 간격(4px * 2) = 242px만 보이도록 고정 */
   #tabs-container {
-    flex: 0 0 242px;
-    width: 242px;
-    max-width: 242px;
+    flex: none !important;
+    width: 242px !important;
+    min-width: 242px !important;
+    max-width: 242px !important;
     gap: 4px;
   }
 
   #tabs-list {
     gap: 4px;
+    width: max-content;
   }
 
   .tab-item {
-    width: 78px;
-    min-width: 78px;
-    max-width: 78px;
+    flex: none !important;
+    width: 78px !important;
+    min-width: 78px !important;
+    max-width: 78px !important;
     padding: 7px 6px;
-    gap: 3px;
-    font-size: 0.8rem;
+    gap: 2px;
+    font-size: 0.78rem;
   }
 
   .tab-title-input {
-    font-size: 0.8rem;
+    flex: 1 1 auto;
+    width: 100% !important;
+    min-width: 0 !important;
+    font-size: 0.78rem;
   }
 
   .close-tab-btn {
-    width: 15px;
-    height: 15px;
-    font-size: 10px;
+    width: 14px;
+    height: 14px;
+    font-size: 9px;
   }
 
   #add-tab-btn {
