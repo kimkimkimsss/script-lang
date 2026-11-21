@@ -232,7 +232,7 @@ function renderTabs() {
 
   if (window.innerWidth <= 768 && tabsContainer && keys.length > 3) {
     requestAnimationFrame(() => {
-      tabsContainer.scrollLeft = tabsContainer.scrollWidth;
+      tabsContainer.scrollLeft = tabsContainer.scrollWidth - tabsContainer.clientWidth;
     });
   }
 }
