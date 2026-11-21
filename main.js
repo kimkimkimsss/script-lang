@@ -21,6 +21,7 @@ let currentModalIdeaId = null;
 let searchQuery = '';
 let currentSort = 'latest';
 
+const tabsContainer = document.getElementById('tabs-container');
 const tabsList = document.getElementById('tabs-list');
 const addTabBtn = document.getElementById('add-tab-btn');
 
@@ -44,6 +45,41 @@ const searchSidebar = document.getElementById('search-sidebar');
 const commentSidebar = document.getElementById('comment-sidebar');
 
 let activeResizer = null;
+let isDraggingTabs = false;
+let hasDraggedTabs = false;
+let tabDragStartX = 0;
+let tabDragStartScrollLeft = 0;
+
+if (tabsContainer) {
+  tabsContainer.addEventListener('pointerdown', (e) => {
+    if (e.target.closest('button')) return;
+    isDraggingTabs = true;
+    hasDraggedTabs = false;
+    tabDragStartX = e.clientX;
+    tabDragStartScrollLeft = tabsContainer.scrollLeft;
+    tabsContainer.classList.add('dragging');
+  });
+
+  document.addEventListener('pointermove', (e) => {
+    if (!isDraggingTabs || !tabsContainer) return;
+    const dx = e.clientX - tabDragStartX;
+    if (Math.abs(dx) > 6) {
+      hasDraggedTabs = true;
+    }
+    if (hasDraggedTabs) {
+      tabsContainer.scrollLeft = tabDragStartScrollLeft - dx;
+    }
+  });
+
+  document.addEventListener('pointerup', () => {
+    if (!isDraggingTabs) return;
+    isDraggingTabs = false;
+    tabsContainer?.classList.remove('dragging');
+    setTimeout(() => {
+      hasDraggedTabs = false;
+    }, 0);
+  });
+}
 
 if (searchSidebar) {
   searchSidebar.addEventListener('mousedown', (e) => {
@@ -137,7 +173,9 @@ function renderTabs() {
   if (!tabsList) return;
   tabsList.innerHTML = '';
 
-  Object.keys(topicsData).forEach((tabId) => {
+  const keys = Object.keys(topicsData);
+
+  keys.forEach((tabId) => {
     let tab = topicsData[tabId];
     let isSelected = tabId === currentTabId;
 
@@ -147,7 +185,11 @@ function renderTabs() {
     let titleInput = document.createElement('input');
     titleInput.className = 'tab-title-input';
     titleInput.value = tab.title || '새 주제';
-    
+
+    titleInput.addEventListener('pointerdown', (e) => {
+      if (!isSelected) e.preventDefault();
+    });
+
     titleInput.addEventListener('change', () => {
       let newTitle = titleInput.value.trim() || '새 주제';
       update(ref(db, `topics/${tabId}`), { title: newTitle });
@@ -174,6 +216,7 @@ function renderTabs() {
     });
 
     tabEl.addEventListener('click', () => {
+      if (hasDraggedTabs) return;
       if (currentTabId !== tabId) {
         currentTabId = tabId;
         currentModalIdeaId = null;
@@ -186,6 +229,12 @@ function renderTabs() {
     tabEl.appendChild(closeBtn);
     tabsList.appendChild(tabEl);
   });
+
+  if (window.innerWidth <= 768 && tabsContainer && keys.length > 3) {
+    requestAnimationFrame(() => {
+      tabsContainer.scrollLeft = tabsContainer.scrollWidth;
+    });
+  }
 }
 
 if (addTabBtn) {
